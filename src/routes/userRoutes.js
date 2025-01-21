@@ -5,8 +5,6 @@ router.get("/", (req, res) => {
   res.send("List of all users");
 });
 
-router.get("/profile", (req, res) => {
-  res.send("User profile details");
-});
+router.get("/profile");
 
 module.exports = router;

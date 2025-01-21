@@ -96,6 +96,11 @@ class AuthService {
       token,
     };
   }
+
+  async getProfile(profile_id) {
+    const profile = await UserRepository.findProfileById(profile_id);
+    return profile;
+  }
 }
 
 module.exports = new AuthService();

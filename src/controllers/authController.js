@@ -73,6 +73,40 @@ class AuthController {
       );
     }
   }
+  async getProfile(req, res) {
+    try {
+      const { profile_id } = req.query;
+
+      // Validasi input
+      if (!profile_id) {
+        return sendResponse(res, 400, false, "Profile ID is required");
+      }
+
+      // Panggil service untuk mendapatkan detail profile
+      const profile = await AuthService.getProfile(profile_id);
+
+      if (!profile) {
+        return sendResponse(res, 404, false, "Profile not found");
+      }
+
+      // Kirim response sukses
+      return sendResponse(
+        res,
+        200,
+        true,
+        "Profile fetched successfully",
+        profile
+      );
+    } catch (error) {
+      console.error(error);
+      return sendResponse(
+        res,
+        500,
+        false,
+        error.message || "Error fetching profile"
+      );
+    }
+  }
 }
 
 module.exports = new AuthController();
