@@ -7,12 +7,12 @@ const Wallet = sequelize.define("Wallet", {
     primaryKey: true,
     autoIncrement: true,
   },
-  worker_id: {
+  user_id: {
     type: DataTypes.INTEGER,
-    // references: {
-    //   model: Worker,
-    //   key: "WorkerID",
-    // },
+    references: {
+      model: "users", // Nama tabel di database yang sesuai
+      key: "id", // Kolom yang menjadi referensi di tabel Worker
+    },
   },
   balance: {
     type: DataTypes.DECIMAL(10, 2),
@@ -20,7 +20,6 @@ const Wallet = sequelize.define("Wallet", {
   },
 });
 
-// Worker.hasOne(Wallet, { foreignKey: "WorkerID" });
-// Wallet.belongsTo(Worker, { foreignKey: "WorkerID" });
+// Tidak perlu mendefinisikan `hasMany` pada Wallet karena Wallet terhubung ke satu Worker dan bisa memiliki banyak Payment
 
 module.exports = Wallet;

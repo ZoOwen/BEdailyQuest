@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 const Job = require("./jobModel");
-const Worker = require("./workerModel");
+const User = require("./userModel"); // Mengganti Worker menjadi User
 
 const JobApplication = sequelize.define("JobApplication", {
   id: {
@@ -17,11 +17,12 @@ const JobApplication = sequelize.define("JobApplication", {
       key: "id",
     },
   },
-  worker_id: {
+  user_id: {
+    // Ganti worker_id menjadi user_id
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Worker,
+      model: User, // Merujuk ke User, bukan Worker
       key: "id",
     },
   },
@@ -33,7 +34,7 @@ const JobApplication = sequelize.define("JobApplication", {
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: "Pending", // Example: Pending, Accepted, Rejected
+    defaultValue: "Pending", // Status default adalah Pending
   },
 });
 

@@ -6,7 +6,7 @@ const Job = require("./jobModel");
 const JobAssignment = require("./jobAssigmentModel");
 const Wallet = require("./walletModel");
 const Payment = require("./paymentModel");
-const JobApplication = require("./jobApplicationModel"); // Import model baru
+const JobApplication = require("./jobApplicationModel");
 
 require("dotenv").config();
 
@@ -26,16 +26,41 @@ Employer.belongsTo(User, { foreignKey: "user_id" });
 User.hasOne(Worker, { foreignKey: "user_id" });
 Worker.belongsTo(User, { foreignKey: "user_id" });
 
-Employer.hasMany(Job, { foreignKey: "employer_id" });
-Job.belongsTo(Employer, { foreignKey: "employer_id" });
+User.hasMany(Job, { foreignKey: "user_id" });
+Job.belongsTo(User, { foreignKey: "user_id" });
 
-Job.hasMany(JobApplication, { foreignKey: "job_id" }); // Relasi Job ke JobApplication
+// Relasi antara JobApplication dan User
+JobApplication.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(JobApplication, { foreignKey: "user_id" });
+
 JobApplication.belongsTo(Job, { foreignKey: "job_id" });
+Job.hasMany(JobApplication, { foreignKey: "job_id" });
 
-Worker.hasMany(JobApplication, { foreignKey: "worker_id" }); // Relasi Worker ke JobApplication
-JobApplication.belongsTo(Worker, { foreignKey: "worker_id" });
+// Relasi antara Wallet dan Worker (Setiap Worker memiliki satu Wallet)
+Wallet.belongsTo(Worker, { foreignKey: "user_id" });
+Worker.hasOne(Wallet, { foreignKey: "user_id" });
 
-// Export semua model dan instance sequelize
+// Relasi antara Payment dan Wallet (Setiap Payment terhubung ke satu Wallet)
+Payment.belongsTo(Wallet, { foreignKey: "wallet_id" });
+Wallet.hasMany(Payment, { foreignKey: "wallet_id" });
+
+// Relasi antara Wallet dan User (Setiap User memiliki satu Wallet)
+User.hasOne(Wallet, { foreignKey: "user_id" });
+Wallet.belongsTo(User, { foreignKey: "user_id" });
+
+// Relasi antara JobAssignment dan Worker
+// JobAssignment.belongsTo(User, { foreignKey: "user_id" });
+// User.hasMany(JobAssignment, { foreignKey: "user_id" });
+
+// // Relasi antara JobAssignment dan Job
+// JobAssignment.belongsTo(Job, { foreignKey: "job_id" });
+// Job.hasMany(JobAssignment, { foreignKey: "job_id" });
+
+JobApplication.hasOne(JobAssignment, { foreignKey: "job_application_id" });
+JobAssignment.belongsTo(JobApplication, { foreignKey: "job_application_id" });
+//error get detail  job
+// error get appliaction
+
 module.exports = {
   sequelize,
   User,
@@ -45,5 +70,5 @@ module.exports = {
   JobAssignment,
   Wallet,
   Payment,
-  JobApplication, // Export model baru
+  JobApplication,
 };

@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const {
   createJobApplication,
+  getApplications,
 } = require("../controllers/jobApplicationController");
 
-// Endpoint untuk membuat job application
 router.post("/create", createJobApplication);
-router.post("/");
+router.get("/", getApplications);
 
 module.exports = router;

@@ -4,26 +4,19 @@ const JobApplicationService = require("../services/jobApplicationService");
 class JobApplicationController {
   async createJobApplication(req, res) {
     try {
-      const { job_id, worker_id, application_date, status } = req.body;
+      const { job_id, user_id, application_date, status } = req.body;
 
-      // Validasi input
-      if (!job_id || !worker_id) {
-        return sendResponse(
-          res,
-          400,
-          false,
-          "job_id and worker_id are required"
-        );
+      if (!job_id || !user_id) {
+        return sendResponse(res, 400, false, "job_id and user_id are required");
       }
 
       const jobApplicationData = {
         job_id,
-        worker_id,
+        user_id,
         application_date: application_date || new Date(),
         status: status || "Pending",
       };
 
-      // Gunakan service untuk membuat job application
       const result = await JobApplicationService.createJobApplication(
         jobApplicationData
       );
@@ -36,8 +29,40 @@ class JobApplicationController {
         result
       );
     } catch (error) {
-      console.error(error);
+      console.error("Error in createJobApplication:", error.message);
       return sendResponse(res, 500, false, "Failed to create job application");
+    }
+  }
+
+  async getApplications(req, res) {
+    try {
+      const { user_id, job_id } = req.query;
+
+      const filter = {};
+      if (user_id) filter.user_id = user_id;
+      if (job_id) filter.job_id = job_id;
+
+      const applications = await JobApplicationService.getApplications(filter);
+
+      if (!applications || applications.length === 0) {
+        return sendResponse(res, 404, false, "No job applications found");
+      }
+
+      return sendResponse(
+        res,
+        200,
+        true,
+        "Job applications retrieved successfully",
+        applications
+      );
+    } catch (error) {
+      console.error("Error in getApplications:", error.message);
+      return sendResponse(
+        res,
+        500,
+        false,
+        "Failed to retrieve job applications"
+      );
     }
   }
 }

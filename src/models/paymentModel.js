@@ -23,14 +23,15 @@ const Payment = sequelize.define("Payment", {
     type: DataTypes.STRING,
     allowNull: false, // Deposit, Withdrawal, Payment
   },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW,
-  },
   status: {
     type: DataTypes.STRING,
     allowNull: false, // Pending, Completed, Failed
     defaultValue: "Pending",
+  },
+
+  midtrans_order_id: {
+    type: DataTypes.STRING,
+    allowNull: true, // Pending, Completed, Failed
   },
 });
 

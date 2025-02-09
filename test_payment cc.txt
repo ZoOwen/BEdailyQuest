@@ -1,0 +1,7 @@
+CREDIT CARD:
+
+Card number: 4111111111111111 (valid for testing)
+Expiry: Any valid date (e.g., 12/23)
+CVV: 123
+
+https://docs.midtrans.com/docs/testing-payment-on-sandbox

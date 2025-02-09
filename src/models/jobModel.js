@@ -27,7 +27,7 @@ const Job = sequelize.define("Job", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  employer_id: {
+  user_id: {
     type: DataTypes.INTEGER,
     // references: {
     //   model: Employer,

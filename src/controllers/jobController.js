@@ -4,22 +4,20 @@ const JobService = require("../services/jobService");
 class JobController {
   async createJob(req, res) {
     try {
-      const { title, description, category, salary, location, employer_id } =
+      const { title, description, category, salary, location, user_id } =
         req.body;
 
-      // Validasi input
       if (
         !title ||
         !description ||
         !category ||
         !salary ||
         !location ||
-        !employer_id
+        !user_id
       ) {
         return sendResponse(res, 400, false, "All fields are required");
       }
 
-      // Validasi tipe data salary
       if (isNaN(salary) || parseFloat(salary) <= 0) {
         return sendResponse(res, 400, false, "Salary must be a valid number");
       }
@@ -30,10 +28,9 @@ class JobController {
         category,
         salary: parseFloat(salary),
         location,
-        employer_id,
+        user_id,
       };
 
-      // Gunakan service untuk membuat job
       const result = await JobService.createJob(jobData);
 
       return sendResponse(res, 201, true, "Job created successfully", result);
@@ -46,6 +43,7 @@ class JobController {
   async getAllJobs(req, res) {
     try {
       const {
+        user_id,
         search = "",
         sortBy = "createdAt",
         order = "DESC",
@@ -61,7 +59,12 @@ class JobController {
         offset: (parseInt(page, 10) - 1) * parseInt(limit, 10),
       };
 
+      if (user_id) {
+        options.user_id = user_id; // Nambahin kondisi user_id kalau ada
+      }
+
       const result = await JobService.getAllJobs(options);
+
       return sendResponse(
         res,
         200,
@@ -79,14 +82,12 @@ class JobController {
     try {
       const jobId = req.params.id;
 
-      // Fetch job detail with employer data
       const job = await JobService.getJobDetail(jobId);
 
       if (!job) {
         return sendResponse(res, 404, false, "Job not found");
       }
-
-      // Struktur ulang respons untuk menempatkan employer data ke dalam objek employer
+      console.log("INI data dari job.user", job.User);
       const responseData = {
         id: job.id,
         title: job.title,
@@ -98,8 +99,10 @@ class JobController {
         createdAt: job.createdAt,
         updatedAt: job.updatedAt,
         employer: {
-          employer_name: job.Employer.name,
-          employer_address: job.Employer.address,
+          employer_name: job.User.username, // Mengambil username dari User
+          company_name: job.User.Employer.company_name, // Mengambil company_name dari Employer
+          employer_name: job.User.Employer.name, // Mengambil name dari Employer
+          employer_address: job.User.Employer.address, // Mengambil address dari Employer
         },
       };
 

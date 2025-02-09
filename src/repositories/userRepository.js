@@ -13,7 +13,7 @@ class UserRepository {
       where: { id: profile_id },
       include: [
         {
-          model: Worker, // Jika user adalah pekerja
+          model: Worker,
           attributes: [
             "name",
             "address",
@@ -24,11 +24,11 @@ class UserRepository {
           ],
         },
         {
-          model: Employer, // Jika user adalah pemberi kerja
+          model: Employer,
           attributes: ["name", "company_name", "address"],
         },
       ],
-      attributes: ["id", "username", "email", "phone", "role"], // Data umum user
+      attributes: ["id", "username", "email", "phone", "role"],
     });
   }
 }

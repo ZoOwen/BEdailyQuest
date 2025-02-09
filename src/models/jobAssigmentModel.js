@@ -7,19 +7,13 @@ const JobAssignment = sequelize.define("JobAssignment", {
     primaryKey: true,
     autoIncrement: true,
   },
+  job_application_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
   job_id: {
     type: DataTypes.INTEGER,
-    // references: {
-    //   model: Job,
-    //   key: "JobID",
-    // },
-  },
-  worker_id: {
-    type: DataTypes.INTEGER,
-    // references: {
-    //   model: Worker,
-    //   key: "WorkerID",
-    // },
+    allowNull: true,
   },
   assigned_at: {
     type: DataTypes.DATE,
@@ -27,6 +21,7 @@ const JobAssignment = sequelize.define("JobAssignment", {
   },
   completed_at: {
     type: DataTypes.DATE,
+    allowNull: true,
   },
   status: {
     type: DataTypes.STRING,

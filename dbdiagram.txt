@@ -1,0 +1,85 @@
+dbdiagram.net backup
+
+Table Users {
+  UserID int [pk, increment] // Primary Key
+  Username varchar [unique]
+  Password varchar
+  Email varchar [unique]
+  Phone varchar
+  Role varchar // Worker, Employer
+  CreatedAt datetime
+}
+
+Table Workers {
+  WorkerID int [pk, increment] // Primary Key
+  UserID int [ref: > Users.UserID] // Foreign Key
+  Name varchar
+  Address text
+  Gender varchar
+  City varchar
+  Province varchar
+  StudentCardPhoto varchar
+}
+
+Table Employers {
+  EmployerID int [pk, increment] // Primary Key
+  UserID int [ref: > Users.UserID] // Foreign Key
+  Name varchar
+  CompanyName varchar
+  Address text
+}
+
+Table Jobs {
+  JobID int [pk, increment] // Primary Key
+  Title varchar
+  Description text
+  Category varchar
+  Salary decimal
+  Location text
+  EmployerID int [ref: > Employers.EmployerID] // Foreign Key
+  Status varchar // Open, Assigned, Completed, Closed
+}
+
+Table JobAssignments {
+  AssignmentID int [pk, increment] // Primary Key
+  JobID int [ref: > Jobs.JobID] // Foreign Key
+  WorkerID int [ref: > Workers.WorkerID] // Foreign Key
+  AssignedAt datetime
+  CompletedAt datetime
+  Status varchar // Assigned, In Progress, Completed
+  Rating int // Optional rating given by employer (1-5)
+  Review text // Optional review given by employer
+}
+
+Table Wallets {
+  WalletID int [pk, increment] // Primary Key
+  WorkerID int [ref: > Workers.WorkerID] // Foreign Key
+  Balance decimal
+}
+
+Table Transactions {
+  TransactionID int [pk, increment] // Primary Key
+  WalletID int [ref: > Wallets.WalletID] // Foreign Key
+  Amount decimal
+  TransactionType varchar // Deposit, Withdrawal, Payment
+  CreatedAt datetime
+  Status varchar // Pending, Completed, Failed
+}
+
+Table Payments {
+  PaymentID int [pk, increment] // Primary Key
+  JobID int [ref: > Jobs.JobID] // Foreign Key
+  WorkerID int [ref: > Workers.WorkerID] // Foreign Key
+  Amount decimal
+  PaidAt datetime
+}
+
+Table JobApplications {
+  ApplicationID int [pk, increment] // Primary Key
+  JobID int [ref: > Jobs.JobID] // Foreign Key to Jobs
+  WorkerID int [ref: > Workers.WorkerID] // Foreign Key to Workers
+  AppliedAt datetime // Timestamp of when the application was made
+  Status varchar // Pending, Accepted, Rejected
+  CoverLetter text // Optional cover letter provided by the worker
+}
+
