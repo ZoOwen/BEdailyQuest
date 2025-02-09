@@ -76,17 +76,20 @@ class PaymentController {
     try {
       const { order_id } = req.body;
 
+      // Ambil status transaksi dari Midtrans API
       const response = await coreApi.transaction.status(order_id);
 
-      console.log("Midtrans API Response:", response);
+      console.log("Midtrans API Response:", response); // Log the response
 
+      // Pastikan ada status_code atau status_message dari Midtrans
       if (response && response.transaction_status) {
-        console.log("CEK STATOSS", response.transaction_status);
+        console.log("CEK STATOSS", response.transaction_status); // Transaction status is a string (e.g., "capture")
 
+        // Perbarui status berdasarkan status transaksi dari Midtrans
         const updateStatus =
           await PaymentService.updatePaymentStatusFromMidtrans(
             response.order_id,
-            response.transaction_status
+            response.transaction_status // Pastikan ini adalah status yang benar (string)
           );
 
         return res.status(200).json({

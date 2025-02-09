@@ -8,6 +8,6 @@ const {
 router.post("/", createPayment);
 
 // Route untuk menerima callback dari Midtrans
-router.get("/status", midtransCallback);
+router.post("/status", midtransCallback);
 
 module.exports = router;

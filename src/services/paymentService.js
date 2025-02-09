@@ -123,14 +123,12 @@ const createMidtransTransaction = async (
   try {
     // Call Midtrans API to create a transaction
     const transaction = await snap.createTransaction(parameter);
-    const id_order = newWalletId;
-    const dataRes = { transaction, id_order };
-    console.log("data trasactionss", transaction);
+
     const updateMidtransId = paymentRepository.updateOrderMidtransId(
       order_id,
       newWalletId
     );
-    return dataRes; // Return the response from Midtrans
+    return transaction; // Return the response from Midtrans
   } catch (error) {
     console.error("Error in creating Midtrans transaction:", error.message);
     throw new Error("Failed to create Midtrans transaction");
