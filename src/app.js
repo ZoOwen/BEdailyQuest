@@ -14,13 +14,7 @@ const jobAssigmentRoutes = require("./routes/jobAssigmentRoutes");
 const { snap, coreApi } = require("./config/midtrans");
 const app = express();
 
-app.use(
-  cors({
-    origin: "https://dailyquest-client-fg2e.vercel.app/", // Change to your Next.js app's URL
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], // Adjust methods as needed
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors());
 
 // Middleware buat baca data dari bodi posmen
 app.use(bodyParser.json());
