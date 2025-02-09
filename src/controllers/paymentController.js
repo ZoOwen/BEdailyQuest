@@ -39,7 +39,7 @@ class PaymentController {
         );
 
       console.log("Payment created: ", result);
-      console.log("Midtrans transaction: ", result.id);
+      console.log("Midtrans transaction: ", MidTranstransaction.id_order);
 
       return sendResponse(res, 200, true, "Payment processed successfully", {
         payment: result,
